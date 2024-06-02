@@ -1,0 +1,6 @@
+@Projeto_Interfocus_HostAddress = http://localhost:5189
+
+GET {{Projeto_Interfocus_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

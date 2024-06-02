@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{F87ABBE9-0788-4894-B942-E3D510773051}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
+		tableInfo.sql = tableInfo.sql
 	EndProjectSection
 EndProject
 Global

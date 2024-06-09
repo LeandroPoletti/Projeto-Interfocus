@@ -5,8 +5,8 @@ namespace Projeto_Interfocus.Entidades
 {
     public class Cliente
     {
-
-
+        //TODO id
+        public int Id { get; set;}
         [Required(ErrorMessage = "Nome é obrigatório")]
         public string Nome { get; set; }
 
@@ -29,7 +29,7 @@ namespace Projeto_Interfocus.Entidades
                 }
             }
         }
-        
+
         [Required(ErrorMessage = "Data de Nascimento é obrigatório")]
         public DateOnly Nascimento { get; set; }
         public string? Email { get; set; }

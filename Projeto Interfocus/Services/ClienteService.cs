@@ -51,20 +51,39 @@ namespace Projeto_Interfocus.Services
             erros = new List<ValidationResult>();
             using var sessao = session.OpenSession();
             using var transaction = sessao.BeginTransaction();
-            var Aluno = sessao.Query<Cliente>()
-                .Where(c => c.Codigo == id)
+            var cliente = sessao.Query<Cliente>()
+                .Where(c => c.Id == id)
                 .FirstOrDefault();
-            if (Aluno == null)
+            if (cliente == null)
             {
                 erros.Add(new ValidationResult("Registro não encontrado",
                     new[] { "id" }));
                 return null;
             }
 
-            sessao.Delete(Aluno);
+            sessao.Delete(cliente);
             transaction.Commit();
-            return Aluno;
+            return cliente;
         }
+
+         public virtual List<Cliente> Listar()
+        {
+            using var sessao = session.OpenSession();
+            var clientes = sessao.Query<Cliente>().ToList();
+            return clientes;
+        }
+
+        public virtual List<Cliente> Listar(string busca)
+        {
+            using var sessao = session.OpenSession();
+            var Alunos = sessao.Query<Cliente>()
+                .Where(c => c.Nome.Contains(busca) ||
+                            c.Email.Contains(busca))
+                .OrderBy(c => c.Id)
+                .ToList();
+            return Alunos;
+        }
+
 
     }
 

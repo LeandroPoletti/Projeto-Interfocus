@@ -5,33 +5,67 @@ namespace Projeto_Interfocus.Entidades
 {
     public class Cliente
     {
-        public Cliente(string nome, string cpf, DateOnly nascimento, string? email)
+
+
+        [Required(ErrorMessage = "Nome é obrigatório")]
+        public string Nome { get; set; }
+
+        [Required(ErrorMessage = "CPF é obrigatório")]
+
+        private string cpf;
+        public string Cpf
         {
-            this.nome = nome;
-
-
-            if (email != null)
+            get { return cpf; }
+            set
             {
-                this.email = email;
+                if (verificarCpf(value, out List<ValidationResult> erros))
+                {
+                    cpf = value;
+                }
+                else
+                {
+                    Console.WriteLine(erros);
+                    throw new ArgumentException("CPF inválido!");
+                }
             }
         }
+        
+        [Required(ErrorMessage = "Data de Nascimento é obrigatório")]
+        public DateOnly Nascimento { get; set; }
+        public string? Email { get; set; }
 
         private bool verificarCpf(string cpf, out List<ValidationResult> erros)
         {
             erros = new List<ValidationResult>();
             if (cpf.Length == 11)
             {
-                StringBuilder sb = new StringBuilder();
-                string primeiroDigito = calcularPrimeiroDigito(cpf, out erros);
+                StringBuilder componentesSb = new StringBuilder();
+
+                for (int i = 0; i < 9; i++)
+                {
+                    componentesSb.Append(cpf[i]);
+                }
+
+                string? primeiroDigito = calcularPrimeiroDigito(cpf, out erros);
                 if (erros.Count > 0)
                 {
                     return false;
                 }
-                sb.Append(primeiroDigito);
+
+                string componentes;
+                componentes = componentesSb.Append(primeiroDigito).ToString();
                 //segundo digito
-                string segundoDigito;
-                //alguma logica
-                string verificador = sb.ToString();
+                string? segundoDigito = calcularSegundoDigito(componentes, out erros);
+
+                if (erros.Count > 0)
+                {
+                    return false;
+                }
+
+                componentesSb.Append(segundoDigito);
+                string verificador = componentesSb.ToString();
+
+                return verificador.Equals(cpf);
 
             }
             else
@@ -71,10 +105,36 @@ namespace Projeto_Interfocus.Entidades
             return primeiroDigito.ToString();
         }
 
-        public string nome { get; set; }
-        public string cpf { get; set; }
-        public string? email { get; set; }
-        public DateOnly nascimento { get; set; }
+        private string? calcularSegundoDigito(string cpf, out List<ValidationResult> erros)
+        {
+            erros = new List<ValidationResult>();
+            int total = 0;
+            int pos = 0;
+            for (int peso = 11; peso >= 2; peso--)
+            {
+                string digito = cpf[pos].ToString();
+
+                if (int.TryParse(digito, out int valor) == false)
+                {
+                    erros.Add(new ValidationResult($"Erro ao converter{digito} para inteiro"));
+                    return null;
+                }
+
+                total += (valor * peso);
+                pos++;
+            }
+            int verificador = total % 11;
+            if (verificador < 2)
+            {
+                verificador = 0;
+            }
+            else
+            {
+                verificador = 11 - verificador;
+            }
+            return verificador.ToString();
+        }
+
 
     }
 }

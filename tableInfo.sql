@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS cliente(
 );
 
 CREATE TABLE IF NOT EXISTS divida(
-	id SERIAL NOT NULL DEFAULT nextval('divida_seq') PRIMARY KEY,
-	situacao BOOL 
+	id INTEGER NOT NULL DEFAULT nextval('divida_seq') PRIMARY KEY,
+	valor DECIMAL(8,2) NOT NULL,
+	situacao BOOL DEFAULT false
 );

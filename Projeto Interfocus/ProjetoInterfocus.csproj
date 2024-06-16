@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <RootNamespace>Projeto_Interfocus</RootNamespace>
+    <RootNamespace>ProjetoInterfocus</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,13 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="Services/" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="hibernate.cfg.xml">
+    <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <EmbeddedResource Include="Mappings/Cliente.hbm.xml" />
+    <!-- <EmbeddedResource Include="Mappings\Curso.hbm.xml" /> -->
   </ItemGroup>
 
 </Project>

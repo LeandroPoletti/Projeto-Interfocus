@@ -1,4 +1,4 @@
-namespace Projeto_Interfocus
+namespace ProjetoInterfocus
 {
     public class WeatherForecast
     {

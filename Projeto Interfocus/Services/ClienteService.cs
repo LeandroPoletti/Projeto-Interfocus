@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Projeto_Interfocus.Entidades;
+using ProjetoInterfocus.Entidades;
 using NHibernate;
 
-namespace Projeto_Interfocus.Services
+namespace ProjetoInterfocus.Services
 {
 
     public class ClienteService
@@ -66,22 +66,22 @@ namespace Projeto_Interfocus.Services
             return cliente;
         }
 
-         public virtual List<Cliente> Listar()
+         public List<Cliente> Listar()
         {
             using var sessao = session.OpenSession();
             var clientes = sessao.Query<Cliente>().ToList();
             return clientes;
         }
 
-        public virtual List<Cliente> Listar(string busca)
+        public List<Cliente> Listar(string busca)
         {
             using var sessao = session.OpenSession();
-            var Alunos = sessao.Query<Cliente>()
+            var Clientes = sessao.Query<Cliente>()
                 .Where(c => c.Nome.Contains(busca) ||
                             c.Email.Contains(busca))
                 .OrderBy(c => c.Id)
                 .ToList();
-            return Alunos;
+            return Clientes;
         }
 
 

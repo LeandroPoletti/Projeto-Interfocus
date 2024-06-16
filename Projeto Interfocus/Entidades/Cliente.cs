@@ -1,13 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace Projeto_Interfocus.Entidades
+namespace ProjetoInterfocus.Entidades
 {
     public class Cliente
     {
         //TODO id
         public int Id { get; set;}
         [Required(ErrorMessage = "Nome é obrigatório")]
+        [StringLength(100, ErrorMessage = "Nome acima da quantidade de caracteres permitidos")]
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "CPF é obrigatório")]
@@ -18,7 +20,7 @@ namespace Projeto_Interfocus.Entidades
             get { return cpf; }
             set
             {
-                if (verificarCpf(value, out List<ValidationResult> erros))
+                if (VerificarCpf(value, out List<ValidationResult> erros))
                 {
                     cpf = value;
                 }
@@ -31,10 +33,10 @@ namespace Projeto_Interfocus.Entidades
         }
 
         [Required(ErrorMessage = "Data de Nascimento é obrigatório")]
-        public DateOnly Nascimento { get; set; }
+        public DateTime Nascimento { get; set; }
         public string? Email { get; set; }
 
-        private bool verificarCpf(string cpf, out List<ValidationResult> erros)
+        private bool VerificarCpf(string cpf, out List<ValidationResult> erros)
         {
             erros = new List<ValidationResult>();
             if (cpf.Length == 11)

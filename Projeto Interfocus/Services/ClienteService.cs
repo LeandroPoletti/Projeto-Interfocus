@@ -73,6 +73,7 @@ namespace ProjetoInterfocus.Services
             return clientes;
         }
 
+
         public List<Cliente> Listar(string busca)
         {
             using var sessao = session.OpenSession();
@@ -84,6 +85,11 @@ namespace ProjetoInterfocus.Services
             return Clientes;
         }
 
+        public Cliente GetCliente(int id){
+            using var sessao = session.OpenSession();
+            Cliente cliente = sessao.Get<Cliente>(id);
+            return cliente;
+        }
 
     }
 

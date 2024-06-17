@@ -12,7 +12,6 @@ namespace ProjetoInterfocus.Entidades
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "CPF é obrigatório")]
-
         private string cpf;
         public string Cpf
         {

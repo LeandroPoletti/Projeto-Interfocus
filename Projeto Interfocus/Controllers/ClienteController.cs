@@ -21,6 +21,16 @@ namespace ProjetoInterfocus.Controllers
             return Ok(clientes);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetOneClient(int id){
+            var cliente = clienteService.GetCliente(id);
+            if (cliente == null){
+                return NotFound();
+            }else{
+                return Ok(cliente);
+            }
+        }
+
         [HttpPost]
         public IActionResult Registrar([FromBody] Cliente cliente){
             if (cliente == null)

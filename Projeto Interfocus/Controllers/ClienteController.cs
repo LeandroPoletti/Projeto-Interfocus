@@ -52,18 +52,12 @@ namespace ProjetoInterfocus.Controllers
             }
             var sucesso = clienteService.Editar(cliente,
                 out List<ValidationResult> erros);
-            if (sucesso)
-            {
-                return Ok(cliente);
-            }
-            else if (erros.Count == 0)
-            {
-                return NotFound();
-            }
-            else
+            if (sucesso == false)
             {
                 return UnprocessableEntity(erros);
             }
+                return Ok(cliente);
+            
         }
 
         [HttpDelete("{id}")]

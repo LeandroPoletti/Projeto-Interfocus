@@ -54,7 +54,7 @@ namespace ProjetoInterfocus.Services
             using var sessao = session.OpenSession();
             using var transaction = sessao.BeginTransaction();
             var cliente = sessao.Query<Cliente>()
-                .Where(c => c.Id == id)
+                .Where(c => c.Id == id).Fetch(c => c.DividasDoCliente)
                 .FirstOrDefault();
             if (cliente == null)
             {
@@ -82,15 +82,19 @@ namespace ProjetoInterfocus.Services
             using var sessao = session.OpenSession();
             var Clientes = sessao.Query<Cliente>()
                 .Where(c => c.Nome.Contains(busca) ||
-                            c.Email.Contains(busca)).Fetch(c => c.DividasDoCliente)
+                            c.Email.Contains(busca)
+                        ).Fetch(c => c.DividasDoCliente)
                 .OrderBy(c => c.Id)
                 .ToList();
             return Clientes;
         }
 
+    //FIXME possible problem
         public Cliente GetCliente(int id){
             using var sessao = session.OpenSession();
-            Cliente cliente = sessao.Get<Cliente>(id);
+            Cliente cliente = sessao.Query<Cliente>()
+            .Where(c => c.Id == id).Fetch(c => c.DividasDoCliente)
+            .FirstOrDefault();
             return cliente;
         }
 

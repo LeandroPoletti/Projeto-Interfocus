@@ -25,7 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<ClienteService>();
-//builder.Services.AddTransient<CursoService>();
+builder.Services.AddTransient<DividaService>();
 
 builder.Services.AddCors(
     b => b.AddDefaultPolicy(

@@ -1,3 +1,7 @@
+--DROP SEQUENCE if exists cliente_seq cascade;
+--DROP SEQUENCE if exists divida_seq cascade;
+--drop table cliente, divida cascade;
+
 CREATE SEQUENCE cliente_seq;
 CREATE SEQUENCE divida_seq;
 
@@ -12,6 +16,10 @@ CREATE TABLE IF NOT EXISTS cliente(
 
 CREATE TABLE IF NOT EXISTS divida(
 	id INTEGER NOT NULL DEFAULT nextval('divida_seq') PRIMARY KEY,
-	valor DECIMAL(8,2) NOT NULL,
-	situacao BOOL DEFAULT false
+	valor DECIMAL(8,2) NOT NULL CHECK (valor > 0),
+	situacao BOOL DEFAULT false,
+	dataCriacao TIMESTAMP NOT NULL DEFAULT current_timestamp,
+	dataPagamento TIMESTAMP CHECK (dataPagamento IS NULL OR dataPagamento > dataCriacao),
+	descricao text not null,
+	id_cliente INTEGER NOT NULL REFERENCES cliente(id)
 );

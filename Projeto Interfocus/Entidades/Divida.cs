@@ -34,8 +34,8 @@ namespace ProjetoInterfocus.Entidades
             }
         }
 
-        private DateTime datacriacao;
-        public DateTime DataCriacao
+        private DateTime? datacriacao;
+        public DateTime? DataCriacao
         {
             get { return datacriacao; }
             set
@@ -44,7 +44,7 @@ namespace ProjetoInterfocus.Entidades
                 // {
                 //     throw new ArgumentException("Data de criação ")
                 // }
-                if (datacriacao.CompareTo(DataPagamento) > 0)
+                if (datacriacao.Value.CompareTo(DataPagamento) > 0)
                 {
                     throw new ArgumentException("Data de criação não pode ocorrer após a data de pagamento");
                 }
@@ -64,9 +64,7 @@ namespace ProjetoInterfocus.Entidades
         [Required(ErrorMessage ="É necessário fornecer descrição para a divida")]
         public string Descricao {get; set;}
 
-
-        [Required(ErrorMessage = "É necessário informar o dono da dívida")]
-        public int Id_cliente {get; set;}
+        public virtual Cliente DividaCliente {get; set;}
 
     }
 }

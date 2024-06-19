@@ -2,6 +2,8 @@
 using ProjetoInterfocus.Services;
 using System.ComponentModel.DataAnnotations;
 using ProjetoInterfocus.Entidades;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace ProjetoInterfocus.Controllers
@@ -9,6 +11,7 @@ namespace ProjetoInterfocus.Controllers
     [Route("api/[controller]")]
     public class ClienteController : ControllerBase
     {
+        
         private readonly ClienteService clienteService;
 
         public ClienteController(ClienteService clienteService){
@@ -18,7 +21,11 @@ namespace ProjetoInterfocus.Controllers
         [HttpGet]
         public IActionResult Listar(string query = null){
             var clientes = query == null ? clienteService.Listar() : clienteService.Listar(query);
-            return Ok(clientes);
+            
+        
+
+        return Ok(clientes);
+            
         }
 
         [HttpGet("{id}")]

@@ -44,7 +44,7 @@ namespace ProjetoInterfocus.Entidades
                 // {
                 //     throw new ArgumentException("Data de criação ")
                 // }
-                if (datacriacao.Value.CompareTo(DataPagamento) > 0)
+                if (value.Value.CompareTo(DataPagamento) > 0 && DataPagamento.HasValue) 
                 {
                     throw new ArgumentException("Data de criação não pode ocorrer após a data de pagamento");
                 }
@@ -54,9 +54,9 @@ namespace ProjetoInterfocus.Entidades
 
         private DateTime? datapagamento;
         public DateTime? DataPagamento {get {return datapagamento;} set {
-            if (datapagamento.HasValue && datapagamento.Value.CompareTo(DataCriacao) > 0)
+            if (value.HasValue && value.Value.CompareTo(DataCriacao) < 0)
                 {
-                    throw new ArgumentException("Data de criação não pode ocorrer após a data de pagamento");
+                    throw new ArgumentException("Data de pagamento não pode ocorrer antes da data de criação");
                 }
                 datapagamento = value;
         }}

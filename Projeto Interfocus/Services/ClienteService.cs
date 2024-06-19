@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using ProjetoInterfocus.Entidades;
 using NHibernate;
+using System.Drawing.Drawing2D;
+using NHibernate.Linq;
 
 namespace ProjetoInterfocus.Services
 {
@@ -69,7 +71,8 @@ namespace ProjetoInterfocus.Services
          public List<Cliente> Listar()
         {
             using var sessao = session.OpenSession();
-            var clientes = sessao.Query<Cliente>().ToList();
+            var clientes = sessao.Query<Cliente>().Fetch(c => c.DividasDoCliente).ToList();
+            
             return clientes;
         }
 
@@ -79,7 +82,7 @@ namespace ProjetoInterfocus.Services
             using var sessao = session.OpenSession();
             var Clientes = sessao.Query<Cliente>()
                 .Where(c => c.Nome.Contains(busca) ||
-                            c.Email.Contains(busca))
+                            c.Email.Contains(busca)).Fetch(c => c.DividasDoCliente)
                 .OrderBy(c => c.Id)
                 .ToList();
             return Clientes;

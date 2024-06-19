@@ -21,5 +21,5 @@ CREATE TABLE IF NOT EXISTS divida(
 	dataCriacao TIMESTAMP NOT NULL DEFAULT current_timestamp,
 	dataPagamento TIMESTAMP CHECK (dataPagamento IS NULL OR dataPagamento > dataCriacao),
 	descricao text not null,
-	id_cliente INTEGER NOT NULL REFERENCES cliente(id)
+	id_cliente INTEGER NOT NULL REFERENCES cliente(id) on delete cascade
 );

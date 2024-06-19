@@ -27,7 +27,7 @@
   <ItemGroup>
 
     <EmbeddedResource Include="Mappings/Cliente.hbm.xml" />
-    <!-- <EmbeddedResource Include="Mappings\Curso.hbm.xml" /> -->
+    <EmbeddedResource Include="Mappings/Divida.hbm.xml" />
   </ItemGroup>
 
 </Project>

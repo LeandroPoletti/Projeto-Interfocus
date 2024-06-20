@@ -15,10 +15,12 @@
         <property name="DataCriacao" column="datacriacao" type="Date" not-null="true"/>
         <property name="DataPagamento"	column="datapagamento" type="Date"	/>
 		<property name="Descricao" column="descricao" not-null="true"/>
-		<!-- <bag name="DividasCliente">
-			<key column="id_cliente" not-null="true"></key>
-			</bag> -->
-			<many-to-one not-null="true" name="DividaCliente" column="id_cliente"></many-to-one>
-		</class>
+		
+		<!-- FIXME selection -->
+
+		<!-- <property name="IdCliente" column="id_cliente"/> -->
+		<many-to-one not-null="true" name="DividaCliente" column="id_cliente"></many-to-one>
+		
+	</class>
 
 </hibernate-mapping>

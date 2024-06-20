@@ -63,7 +63,10 @@ namespace ProjetoInterfocus.Entidades
 
         [Required(ErrorMessage ="É necessário fornecer descrição para a divida")]
         public string Descricao {get; set;}
+        
+        //FIXME IMPLEMENTATION WAY
 
+        // public int IdCliente {get; set;}
         public virtual Cliente DividaCliente {get; set;}
 
     }

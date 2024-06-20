@@ -51,6 +51,7 @@ namespace ProjetoInterfocus.Services{
             var divida = sessao.Query<Divida>()
                 .Where(c => c.Id == id)
                 .FirstOrDefault();
+        
             if (divida == null)
             {
                 erros.Add(new ValidationResult("Registro não encontrado",
@@ -67,9 +68,10 @@ namespace ProjetoInterfocus.Services{
         {
             using var sessao = session.OpenSession();
             var dividas = sessao.Query<Divida>()
-            .Fetch(d => d.DividaCliente)
-            .ThenFetch(c => c.DividasDoCliente)
-            .ToList();
+                .ToList();
+            // .Fetch(d => d.DividaCliente)
+            // .ThenFetch(c => c.DividasDoCliente)
+
             
             return dividas;
         }
@@ -80,10 +82,10 @@ namespace ProjetoInterfocus.Services{
             using var sessao = session.OpenSession();
             var dividas = sessao.Query<Divida>()
                 .Where(c => c.Descricao.Contains(busca))
-                .Fetch(c => c.DividaCliente)
-                .ThenFetch(c => c.DividasDoCliente)
                 .OrderBy(c => c.Id)
                 .ToList();
+                //.Fetch(c => c.DividaCliente)
+                //.ThenFetch(c => c.DividasDoCliente)
             return dividas;
                             // c.Email.Contains(busca).Fetch(c => c.DividasDoCliente)
         }

@@ -8,10 +8,10 @@ namespace ProjetoInterfocus.Entidades
         public int Id { get; set; }
 
 
-        private int valor;
+        private float valor;
 
-        [Required(ErrorMessage = "É necessário incluir um vaor")]
-        public int Valor
+        [Required(ErrorMessage = "É necessário incluir um valor")]
+        public float Valor
         {
             get { return valor; }
             set
@@ -23,7 +23,7 @@ namespace ProjetoInterfocus.Entidades
                 valor = value;
             }
         }
-
+        //! TODO implementar logica
         private bool situacao;
         public bool Situacao
         {
@@ -34,7 +34,7 @@ namespace ProjetoInterfocus.Entidades
             }
         }
 
-        private DateTime? datacriacao;
+        private DateTime? datacriacao = DateTime.Now;
         public DateTime? DataCriacao
         {
             get { return datacriacao; }
@@ -44,7 +44,7 @@ namespace ProjetoInterfocus.Entidades
                 // {
                 //     throw new ArgumentException("Data de criação ")
                 // }
-                if (value.Value.CompareTo(DataPagamento) > 0 && DataPagamento.HasValue) 
+                if (DataPagamento.HasValue && value.HasValue && value.Value.CompareTo(DataPagamento) > 0 ) 
                 {
                     throw new ArgumentException("Data de criação não pode ocorrer após a data de pagamento");
                 }
@@ -66,8 +66,9 @@ namespace ProjetoInterfocus.Entidades
         
         //FIXME IMPLEMENTATION WAY
 
-        // public int IdCliente {get; set;}
-        public virtual Cliente DividaCliente {get; set;}
 
+        [Required(ErrorMessage ="É necessário informar o id do dono da divida")]
+       public virtual Cliente DividaCliente {get ; set;}
+        //public int IdCliente {get; set;}
     }
 }

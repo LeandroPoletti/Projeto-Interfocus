@@ -23,7 +23,22 @@ namespace ProjetoInterfocus.Services{
         public bool Registrar(Divida divida, out List<ValidationResult> erros){
             if(Validar(divida, out erros)){
                 using var sessao = session.OpenSession();
+
+                Cliente dono = sessao.Get<Cliente>(divida.DividaCliente);
+                if(dono == null){
+                    erros.Add(new ValidationResult("Cliente não existe"));
+                    return false;
+                }
+
+                if(dono.LimiteDisponivel < divida.Valor){
+                    erros.Add(new ValidationResult("Limite do cliente insuficiente"));
+                    return false;
+                }
+
                 using var transaction = sessao.BeginTransaction();
+                dono.LimiteDisponivel -= divida.Valor;
+
+                sessao.Merge(dono);
                 sessao.Save(divida);
                 transaction.Commit();
                 return true;
@@ -34,9 +49,22 @@ namespace ProjetoInterfocus.Services{
 
         public bool Editar(Divida divida, out List<ValidationResult> erros){
             if(Validar(divida, out erros)){
+
                 using var sessao = session.OpenSession();
                 using var transaction = sessao.BeginTransaction();
+                
+                Divida registrada = sessao.Get<Divida>(divida.Id);
+                Cliente dono = sessao.Get<Cliente>(registrada.DividaCliente);
+
+                if((dono.LimiteDisponivel + registrada.Valor) < divida.Valor){
+                    return false;
+                }
+                
+                dono.LimiteDisponivel += registrada.Valor;
+                dono.LimiteDisponivel -= divida.Valor;
+                
                 sessao.Merge(divida);
+                sessao.Merge(dono);
                 transaction.Commit();
                 return true;
             }
@@ -58,20 +86,24 @@ namespace ProjetoInterfocus.Services{
                     new[] { "id" }));
                 return null;
             }
-
+            var dono = sessao.Get<Cliente>(divida.DividaCliente);
+            dono.LimiteDisponivel += divida.Valor;
             sessao.Delete(divida);
+            sessao.Merge(dono);
             transaction.Commit();
             return divida;
         }
 
+
+
+        //! FIXME arrumar retorno
          public List<Divida> Listar()
         {
             using var sessao = session.OpenSession();
             var dividas = sessao.Query<Divida>()
                 .ToList();
-            // .Fetch(d => d.DividaCliente)
-            // .ThenFetch(c => c.DividasDoCliente)
 
+            
             
             return dividas;
         }

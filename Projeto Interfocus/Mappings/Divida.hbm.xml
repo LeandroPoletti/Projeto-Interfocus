@@ -16,10 +16,11 @@
         <property name="DataPagamento"	column="datapagamento" type="Date"	/>
 		<property name="Descricao" column="descricao" not-null="true"/>
 		
+		<!-- <property name="IdCliente" column="id_cliente"/> -->
+		
 		<!-- FIXME selection -->
 
-		<!-- <property name="IdCliente" column="id_cliente"/> -->
-		<many-to-one not-null="true" name="DividaCliente" column="id_cliente"></many-to-one>
+		<many-to-one name="DividaCliente" fetch="join" lazy="false" column="id_cliente"></many-to-one>
 		
 	</class>
 

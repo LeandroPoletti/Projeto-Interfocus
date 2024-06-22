@@ -68,7 +68,7 @@ namespace ProjetoInterfocus.Entidades
 
 
         [Required(ErrorMessage ="É necessário informar o id do dono da divida")]
-       public virtual Cliente DividaCliente {get ; set;}
+       public virtual Cliente ClienteDaDivida {get ; set;}
         //public int IdCliente {get; set;}
     }
 }

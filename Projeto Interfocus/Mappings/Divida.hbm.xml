@@ -20,7 +20,7 @@
 		
 		<!-- FIXME selection -->
 
-		<many-to-one name="DividaCliente" fetch="join" lazy="false" column="id_cliente"></many-to-one>
+		<many-to-one name="ClienteDaDivida" fetch="join" lazy="false" column="id_cliente"></many-to-one>
 		
 	</class>
 

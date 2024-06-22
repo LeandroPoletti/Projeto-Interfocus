@@ -24,7 +24,7 @@ namespace ProjetoInterfocus.Services{
             if(Validar(divida, out erros)){
                 using var sessao = session.OpenSession();
 
-                Cliente dono = sessao.Get<Cliente>(divida.DividaCliente);
+                Cliente dono = sessao.Get<Cliente>(divida.ClienteDaDivida);
                 if(dono == null){
                     erros.Add(new ValidationResult("Cliente não existe"));
                     return false;
@@ -54,7 +54,7 @@ namespace ProjetoInterfocus.Services{
                 using var transaction = sessao.BeginTransaction();
                 
                 Divida registrada = sessao.Get<Divida>(divida.Id);
-                Cliente dono = sessao.Get<Cliente>(registrada.DividaCliente);
+                Cliente dono = sessao.Get<Cliente>(registrada.ClienteDaDivida);
 
                 if((dono.LimiteDisponivel + registrada.Valor) < divida.Valor){
                     return false;
@@ -86,7 +86,7 @@ namespace ProjetoInterfocus.Services{
                     new[] { "id" }));
                 return null;
             }
-            var dono = sessao.Get<Cliente>(divida.DividaCliente);
+            var dono = sessao.Get<Cliente>(divida.ClienteDaDivida);
             dono.LimiteDisponivel += divida.Valor;
             sessao.Delete(divida);
             sessao.Merge(dono);

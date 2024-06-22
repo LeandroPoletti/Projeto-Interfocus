@@ -41,6 +41,13 @@ namespace ProjetoInterfocus.Services
             if(Validar(cliente, out erros)){
                 using var sessao = session.OpenSession();
                 using var transaction = sessao.BeginTransaction();
+                
+                foreach (var divida in cliente.DividasDoCliente)
+                {
+                    divida.ClienteDaDivida = cliente;
+                }
+
+
                 sessao.Merge(cliente);
                 transaction.Commit();
                 return true;

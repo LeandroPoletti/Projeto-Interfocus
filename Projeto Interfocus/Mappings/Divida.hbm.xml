@@ -18,7 +18,6 @@
 		
 		<!-- <property name="IdCliente" column="id_cliente"/> -->
 		
-		<!-- FIXME selection -->
 
 		<many-to-one name="ClienteDaDivida" fetch="join" lazy="false" column="id_cliente"></many-to-one>
 		

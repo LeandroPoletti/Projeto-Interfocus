@@ -6,7 +6,6 @@ namespace ProjetoInterfocus.Entidades
 {
     public class Cliente
     {
-        //TODO id
         public int Id { get; set; }
         [Required(ErrorMessage = "Nome é obrigatório")]
         [StringLength(100, ErrorMessage = "Nome acima da quantidade de caracteres permitidos")]
@@ -52,11 +51,7 @@ namespace ProjetoInterfocus.Entidades
         private string email;
         public string? Email { get {return email;} set => email = value.ToLower(); }
 
-        public float LimiteDisponivel { get; set; }
 
         public virtual IList<Divida> DividasDoCliente{ get; set; } = new List<Divida>();
-
-
-
     }
 }

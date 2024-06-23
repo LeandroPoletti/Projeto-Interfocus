@@ -3,14 +3,21 @@ using NHibernate;
 using NHibernate.Linq;
 using ProjetoInterfocus.Entidades;
 
-namespace ProjetoInterfocus.Services{
-    public class DividaService{
+namespace ProjetoInterfocus.Services
+{
+    public class DividaService
+    {
         private readonly ISessionFactory session;
-        public DividaService(ISessionFactory session){
+
+
+
+        public DividaService(ISessionFactory session)
+        {
             this.session = session;
         }
 
-        public static bool Validar(Divida divida, out List<ValidationResult> erros){
+        public static bool Validar(Divida divida, out List<ValidationResult> erros)
+        {
             erros = new List<ValidationResult>();
             var valido = Validator.TryValidateObject(divida,
                 new ValidationContext(divida),
@@ -20,51 +27,67 @@ namespace ProjetoInterfocus.Services{
             return valido;
         }
 
-        public bool Registrar(Divida divida, out List<ValidationResult> erros){
-            if(Validar(divida, out erros)){
+        public bool Registrar(Divida divida, out List<ValidationResult> erros)
+        {
+            if (Validar(divida, out erros))
+            {
                 using var sessao = session.OpenSession();
 
-                Cliente dono = sessao.Get<Cliente>(divida.ClienteDaDivida);
-                if(dono == null){
+                Cliente dono = sessao.Get<Cliente>(divida.ClienteDaDivida.Id);
+                if (dono == null)
+                {
                     erros.Add(new ValidationResult("Cliente não existe"));
                     return false;
                 }
 
-                if(dono.LimiteDisponivel < divida.Valor){
-                    erros.Add(new ValidationResult("Limite do cliente insuficiente"));
-                    return false;
+                if (divida.Situacao == false)
+                {
+                    var total = GeneralService.SomarDividas(dono);
+                    total += divida.Valor;
+
+                    if (total > 200)
+                    {
+                        erros.Add(new ValidationResult("Valor ultrapassa limite de 200 reais de divida por cliente"));
+                        return false;
+                    }
                 }
 
                 using var transaction = sessao.BeginTransaction();
-                dono.LimiteDisponivel -= divida.Valor;
-
-                sessao.Merge(dono);
+                // sessao.Merge(dono);
                 sessao.Save(divida);
                 transaction.Commit();
                 return true;
-            }else{
+            }
+            else
+            {
                 return false;
             }
         }
 
-        public bool Editar(Divida divida, out List<ValidationResult> erros){
-            if(Validar(divida, out erros)){
+        public bool Editar(Divida divida, out List<ValidationResult> erros)
+        {
+            if (Validar(divida, out erros))
+            {
 
                 using var sessao = session.OpenSession();
                 using var transaction = sessao.BeginTransaction();
-                
-                Divida registrada = sessao.Get<Divida>(divida.Id);
-                Cliente dono = sessao.Get<Cliente>(registrada.ClienteDaDivida);
 
-                if((dono.LimiteDisponivel + registrada.Valor) < divida.Valor){
-                    return false;
+                Divida registrada = sessao.Get<Divida>(divida.Id);
+                Cliente dono = sessao.Get<Cliente>(registrada.ClienteDaDivida.Id);
+
+                if (divida.Situacao == false)
+                {
+                    var total = GeneralService.SomarDividas(dono);
+                    total = registrada.Situacao ? total : total - registrada.Valor;
+
+                    if (total > 200 || (total+divida.Valor > 200))
+                    {
+                        return false;
+                    }
                 }
-                
-                dono.LimiteDisponivel += registrada.Valor;
-                dono.LimiteDisponivel -= divida.Valor;
-                
+
                 sessao.Merge(divida);
-                sessao.Merge(dono);
+                // sessao.Merge(dono);
                 transaction.Commit();
                 return true;
             }
@@ -79,15 +102,17 @@ namespace ProjetoInterfocus.Services{
             var divida = sessao.Query<Divida>()
                 .Where(c => c.Id == id)
                 .FirstOrDefault();
-        
+
             if (divida == null)
             {
                 erros.Add(new ValidationResult("Registro não encontrado",
                     new[] { "id" }));
                 return null;
             }
-            var dono = sessao.Get<Cliente>(divida.ClienteDaDivida);
-            dono.LimiteDisponivel += divida.Valor;
+            var dono = sessao.Get<Cliente>(divida.ClienteDaDivida.Id);
+            dono.DividasDoCliente.Remove(divida);
+            // var dono = sessao.Get<Cliente>(divida.ClienteDaDivida);
+            // dono.LimiteDisponivel += divida.Valor;
             sessao.Delete(divida);
             sessao.Merge(dono);
             transaction.Commit();
@@ -96,15 +121,17 @@ namespace ProjetoInterfocus.Services{
 
 
 
-        //! FIXME arrumar retorno
-         public List<Divida> Listar()
+        public List<Divida> Listar()
         {
             using var sessao = session.OpenSession();
             var dividas = sessao.Query<Divida>()
                 .ToList();
 
-            
-            
+            foreach (var divida in dividas)
+            {
+                divida.ClienteDaDivida.DividasDoCliente = null;
+            }
+
             return dividas;
         }
 
@@ -116,15 +143,21 @@ namespace ProjetoInterfocus.Services{
                 .Where(c => c.Descricao.Contains(busca))
                 .OrderBy(c => c.Id)
                 .ToList();
-                //.Fetch(c => c.DividaCliente)
-                //.ThenFetch(c => c.DividasDoCliente)
+
+            foreach (var divida in dividas)
+            {
+                divida.ClienteDaDivida.DividasDoCliente = null;
+            }
+
             return dividas;
-                            // c.Email.Contains(busca).Fetch(c => c.DividasDoCliente)
         }
 
-        public Divida GetDivida(int id){
+        public Divida GetDivida(int id)
+        {
             using var sessao = session.OpenSession();
             Divida divida = sessao.Get<Divida>(id);
+
+            divida.ClienteDaDivida.DividasDoCliente = null!;
             return divida;
         }
 

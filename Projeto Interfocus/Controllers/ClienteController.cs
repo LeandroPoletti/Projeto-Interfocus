@@ -19,8 +19,8 @@ namespace ProjetoInterfocus.Controllers
         }
 
         [HttpGet]
-        public IActionResult Listar(string query = null){
-            var clientes = query == null ? clienteService.Listar() : clienteService.Listar(query);
+        public IActionResult Listar(string q = null, int page = 1){
+            var clientes = q == null ? clienteService.Listar(page) : clienteService.Listar(q, page);
             
         
 

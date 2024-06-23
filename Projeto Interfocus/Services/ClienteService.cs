@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using ProjetoInterfocus.Entidades;
 using NHibernate;
-using System.Drawing.Drawing2D;
 using NHibernate.Linq;
 
 namespace ProjetoInterfocus.Services
@@ -15,7 +14,8 @@ namespace ProjetoInterfocus.Services
             this.session = session;
         }
 
-        public static bool Validar(Cliente cliente, out List<ValidationResult> erros){
+        public static bool Validar(Cliente cliente, out List<ValidationResult> erros)
+        {
             erros = new List<ValidationResult>();
             var valido = Validator.TryValidateObject(cliente,
                 new ValidationContext(cliente),
@@ -25,23 +25,29 @@ namespace ProjetoInterfocus.Services
             return valido;
         }
 
-        public bool Registrar(Cliente cliente, out List<ValidationResult> erros){
-            if(Validar(cliente, out erros)){
+        public bool Registrar(Cliente cliente, out List<ValidationResult> erros)
+        {
+            if (Validar(cliente, out erros))
+            {
                 using var sessao = session.OpenSession();
                 using var transaction = sessao.BeginTransaction();
                 sessao.Save(cliente);
                 transaction.Commit();
                 return true;
-            }else{
+            }
+            else
+            {
                 return false;
             }
         }
 
-        public bool Editar(Cliente cliente, out List<ValidationResult> erros){
-            if(Validar(cliente, out erros)){
+        public bool Editar(Cliente cliente, out List<ValidationResult> erros)
+        {
+            if (Validar(cliente, out erros))
+            {
                 using var sessao = session.OpenSession();
                 using var transaction = sessao.BeginTransaction();
-                
+
                 foreach (var divida in cliente.DividasDoCliente)
                 {
                     divida.ClienteDaDivida = cliente;
@@ -75,32 +81,46 @@ namespace ProjetoInterfocus.Services
             return cliente;
         }
 
-         public List<Cliente> Listar()
+        //TODO Paginamento, skip e take
+
+        public List<Cliente> Listar(int page)
         {
             using var sessao = session.OpenSession();
-            var clientes = sessao.Query<Cliente>().Fetch(c => c.DividasDoCliente).ToList();
-            
+            var clientes = sessao.Query<Cliente>()
+            .ToList();
+
+            clientes = clientes.OrderByDescending(c => GeneralService.SomarDividas(c))
+            .Skip((page-1) * 10)
+            .Take(10)
+            .ToList();
+
             return clientes;
         }
 
 
-        public List<Cliente> Listar(string busca)
+        public List<Cliente> Listar(string busca, int page)
         {
             using var sessao = session.OpenSession();
-            var Clientes = sessao.Query<Cliente>()
+            var clientes = sessao.Query<Cliente>()
                 .Where(c => c.Nome.Contains(busca) ||
                             c.Email.Contains(busca)
-                        ).Fetch(c => c.DividasDoCliente)
+                        )
                 .OrderBy(c => c.Id)
                 .ToList();
-            return Clientes;
+
+            clientes = clientes.OrderByDescending(c => GeneralService.SomarDividas(c))
+            .Skip((page-1) * 10)
+            .Take(10)
+            .ToList();
+
+            return clientes;
         }
 
-    //FIXME possible problem
-        public Cliente GetCliente(int id){
+        public Cliente GetCliente(int id)
+        {
             using var sessao = session.OpenSession();
             Cliente cliente = sessao.Query<Cliente>()
-            .Where(c => c.Id == id).Fetch(c => c.DividasDoCliente)
+            .Where(c => c.Id == id)
             .FirstOrDefault();
             return cliente;
         }

@@ -31,6 +31,7 @@ namespace ProjetoInterfocus.Services
             {
                 using var sessao = session.OpenSession();
                 using var transaction = sessao.BeginTransaction();
+                cliente.DividasDoCliente = null;
                 sessao.Save(cliente);
                 transaction.Commit();
                 return true;
@@ -47,11 +48,16 @@ namespace ProjetoInterfocus.Services
             {
                 using var sessao = session.OpenSession();
                 using var transaction = sessao.BeginTransaction();
+                var registrado = sessao.Get<Cliente>(cliente.Id);
 
-                foreach (var divida in cliente.DividasDoCliente)
-                {
-                    divida.ClienteDaDivida = cliente;
-                }
+                //! Implementaçao
+
+                cliente.DividasDoCliente = registrado.DividasDoCliente;
+
+                // foreach (var divida in cliente.DividasDoCliente)
+                // {
+                //     divida.ClienteDaDivida = cliente;
+                // }
 
 
                 sessao.Merge(cliente);

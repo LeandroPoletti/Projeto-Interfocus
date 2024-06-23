@@ -1,5 +1,5 @@
 import "./home.css"
-import {Link} from "react-router-dom"
+import {Link} from "simple-react-routing"
 
 
 export default function Home() {
@@ -10,7 +10,16 @@ export default function Home() {
     </div>
     <div className="homeContent">
       <div className="home-links">
-        <Link to="/clientes">Clientes</Link>
+        <Link to="/clientes">
+        <button>
+          Clientes
+        </button>
+        </Link>
+        <Link to="/dividas">
+        <button>
+          Dividas
+        </button>
+        </Link>
       </div>
     </div>
     </>

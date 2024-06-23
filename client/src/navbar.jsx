@@ -1,17 +1,19 @@
 import "./navbar.css";
-export default function Navbar() {
-  
+import { Link } from "simple-react-routing";
 
+export default function Navbar() {
   return (
     <>
       <div className="navbar">
         <div className="Brand">
-          <h1>Projeto Interfocus</h1>
+          <Link to="/">
+            <h1>Projeto Interfocus</h1>
+          </Link>
         </div>
-        
+
         <div className="links">
-          <a href="">Clientes</a>
-          <a href="">Dividas</a>
+          <Link to="/clientes">Clientes</Link>
+          <Link to="/dividas">Dividas</Link>
         </div>
       </div>
     </>

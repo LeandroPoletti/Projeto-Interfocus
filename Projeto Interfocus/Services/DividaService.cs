@@ -121,10 +121,13 @@ namespace ProjetoInterfocus.Services
 
 
 
-        public List<Divida> Listar()
+        public List<Divida> Listar(int pagina)
         {
             using var sessao = session.OpenSession();
             var dividas = sessao.Query<Divida>()
+                .OrderBy(c => c.Id)
+                .Skip((pagina - 1) * 10)
+                .Take(10)
                 .ToList();
 
             foreach (var divida in dividas)
@@ -136,12 +139,14 @@ namespace ProjetoInterfocus.Services
         }
 
 
-        public List<Divida> Listar(string busca)
+        public List<Divida> Listar(int pagina,string busca)
         {
             using var sessao = session.OpenSession();
             var dividas = sessao.Query<Divida>()
                 .Where(c => c.Descricao.Contains(busca))
                 .OrderBy(c => c.Id)
+                .Skip((pagina - 1) * 10)
+                .Take(10)
                 .ToList();
 
             foreach (var divida in dividas)

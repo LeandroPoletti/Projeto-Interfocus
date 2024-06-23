@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import "./lista_clientes.css";
-import { listarClientes, idadeAtual, somarDividas } from "/src/services/clienteService";
+import {
+  listarClientes,
+  idadeAtual,
+  somarDividas,
+} from "/src/services/clienteService";
+import {Link} from "simple-react-routing"
 
 export default function ListaClientes() {
   const [pagina, setPagina] = useState(1);
@@ -11,25 +16,39 @@ export default function ListaClientes() {
     listarClientes(pagina, pesquisa).then((resposta) => {
       if (resposta.status == 200) {
         resposta.json().then((resposta) => {
-          console.log(resposta);
           setClientes(resposta);
         });
       }
     });
   }, [pagina, pesquisa]);
 
+  // TODO Organizar melhor retorno?
+
   return (
     <>
       <div className="listaTitulo">
         <h1>Lista de clientes cadastrados</h1>
       </div>
+      <div className="lista-actions">
+        <div className="action-elements">
+        <div className="cadastrar">
+          <button className="lista-button">Cadastrar cliente</button>
+        </div>
+        <div className="pesquisa">
+          <input type="search" placeholder="Buscar cliente" value={pesquisa} onChange={(event) => {
+            setPesquisa(event.target.value)
+            setPagina(1)
+          }}/>
+        </div>
+        </div>
+      </div>
+
       <div className="lista">
         {clientes.map((cliente) => {
-            let datanascimento =  idadeAtual(cliente.nascimento)
-            let somaDasDividas = somarDividas(cliente.dividasDoCliente)
-
-          return (
-            <>
+          let datanascimento = idadeAtual(cliente.nascimento);
+          let somaDasDividas = somarDividas(cliente.dividasDoCliente);
+            return(
+                <>
               <div className="card">
                 <div className="nome">
                   <h2>{cliente.nome}</h2>
@@ -42,16 +61,21 @@ export default function ListaClientes() {
                     {cliente.email}
                   </a>
                 </div>
-                <div className="divida">Valor em aberto: R${somaDasDividas}</div>
+                <div className="divida">
+                  Valor em aberto: R$:{somaDasDividas}
+                </div>
                 <hr />
                 <div className="footer">
                   <button className="excluir lista-button">Excluir</button>
-                  <button className="editar lista-button">Editar</button>
+                  <Link to={"/clientes/" + cliente.id}><button className="editar lista-button">Editar</button></Link>
                 </div>
               </div>
-            </>
-          );
-        })}
+              </>
+            )
+              }
+              )}
+          
+        
       </div>
       <div className="page-navigator">
         <button

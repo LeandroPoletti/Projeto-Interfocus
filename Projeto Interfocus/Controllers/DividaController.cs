@@ -11,40 +11,48 @@ namespace ProjetoInterfocus.Controllers
     [Route("api/[controller]")]
     public class DividaController : ControllerBase
     {
-        
+
         private readonly DividaService dividaService;
 
-        public DividaController(DividaService dividaService){
+        public DividaController(DividaService dividaService)
+        {
             this.dividaService = dividaService;
         }
 
         [HttpGet]
-        public IActionResult Listar(string query = null){
-            var clientes = query == null ? dividaService.Listar() : dividaService.Listar(query);
-            
-        return Ok(clientes);
-            
+        public IActionResult Listar(int page = 1, string q = null)
+        {
+            var clientes = q == null ? dividaService.Listar(page) : dividaService.Listar(page, q);
+
+            return Ok(clientes);
+
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetOneClient(int id){
+        public IActionResult GetOneClient(int id)
+        {
             var cliente = dividaService.GetDivida(id);
-            if (cliente == null){
+            if (cliente == null)
+            {
                 return NotFound();
-            }else{
+            }
+            else
+            {
                 return Ok(cliente);
             }
         }
 
         //FIXME possible problem
         [HttpPost]
-        public IActionResult Registrar([FromBody] Divida divida){
+        public IActionResult Registrar([FromBody] Divida divida)
+        {
             if (divida == null)
             {
                 return BadRequest(ModelState);
             }
             var sucess = dividaService.Registrar(divida, out List<ValidationResult> erros);
-            if(!sucess){
+            if (!sucess)
+            {
                 return UnprocessableEntity(erros);
             }
 
@@ -52,8 +60,10 @@ namespace ProjetoInterfocus.Controllers
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Divida divida){
-            if(divida == null){
+        public IActionResult Edit([FromBody] Divida divida)
+        {
+            if (divida == null)
+            {
                 return BadRequest(ModelState);
             }
             var sucesso = dividaService.Editar(divida,
@@ -62,12 +72,13 @@ namespace ProjetoInterfocus.Controllers
             {
                 return UnprocessableEntity(erros);
             }
-                return Ok(divida);
-            
+            return Ok(divida);
+
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id){
+        public IActionResult Delete(int id)
+        {
             var divida = dividaService.Excluir(id, out _);
             if (divida == null)
             {

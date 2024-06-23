@@ -1,8 +1,9 @@
 const URL_API = "http://127.0.0.1:5189";
 
 export  function listarClientes(pagina, pesquisa){
-    let query = "?p=" + pagina
-    let response =  pesquisa ?  fetch(URL_API+"/api/cliente"+query+"q="+pesquisa) : fetch(URL_API+"/api/cliente"+query) 
+    
+    let query = "?page=" + pagina
+    let response =  pesquisa ?  fetch(URL_API+"/api/cliente"+query+"&q="+pesquisa) : fetch(URL_API+"/api/cliente"+query) 
 
     return response
 }
@@ -13,7 +14,7 @@ export function idadeAtual(nascimento){
     var birthDate = new Date(nascimento);
     var age = today.getFullYear() - birthDate.getFullYear();
     var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    if (m < 0 || (m == 0 && today.getDate() < birthDate.getDate())) {
         age--;
     }
     return age;

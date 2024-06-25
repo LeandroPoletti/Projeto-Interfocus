@@ -1,9 +1,7 @@
 import "./App.css";
 import { BrowserRouter } from "simple-react-routing";
-import Home from "./home/home";
 import Layout from "./layout/Layout";
-import ListaClientes from "./clientes/lista_clientes/lista_clientes";
-import  ListaDividas from "./divida/lista_divida/Lista_Dividas"
+import Home from "./layout/Home";
 
 function App() {
   return (
@@ -14,18 +12,10 @@ function App() {
           path: "",
           component: <Home></Home>
         },
-        {
-          path: "clientes",
-          component: <ListaClientes></ListaClientes>
-        },
-        {
-          path: "dividas",
-          component: <ListaDividas></ListaDividas>
-        }
-      
+
       ]}>
-        <Layout></Layout>
-        </BrowserRouter>
+      <Layout></Layout>
+    </BrowserRouter>
   );
 }
 

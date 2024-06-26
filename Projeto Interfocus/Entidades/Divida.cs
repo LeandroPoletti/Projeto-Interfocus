@@ -23,18 +23,11 @@ namespace ProjetoInterfocus.Entidades
                 valor = value;
             }
         }
-        //! TODO implementar logica
-        private bool situacao;
-        public bool Situacao
-        {
-            get { return situacao; }
-            set
-            {
 
-            }
-        }
 
         private DateTime? datacriacao = DateTime.Now;
+
+        [Required(ErrorMessage = "Necessário informar data de criação")]
         public DateTime? DataCriacao
         {
             get { return datacriacao; }
@@ -44,7 +37,7 @@ namespace ProjetoInterfocus.Entidades
                 // {
                 //     throw new ArgumentException("Data de criação ")
                 // }
-                if (DataPagamento.HasValue && value.HasValue && value.Value.CompareTo(DataPagamento) > 0 ) 
+                if (DataPagamento.HasValue && value.HasValue && value.Value.CompareTo(DataPagamento) > 0)
                 {
                     throw new ArgumentException("Data de criação não pode ocorrer após a data de pagamento");
                 }
@@ -53,20 +46,30 @@ namespace ProjetoInterfocus.Entidades
         }
 
         private DateTime? datapagamento;
-        public DateTime? DataPagamento {get {return datapagamento;} set {
-            if (value.HasValue && value.Value.CompareTo(DataCriacao) < 0)
+        public DateTime? DataPagamento
+        {
+            get { return datapagamento; }
+            set
+            {
+                if (value.HasValue && value.Value.CompareTo(DataCriacao) < 0)
                 {
                     throw new ArgumentException("Data de pagamento não pode ocorrer antes da data de criação");
                 }
                 datapagamento = value;
-        }}
+            }
+        }
 
-        [Required(ErrorMessage ="É necessário fornecer descrição para a divida")]
-        public string Descricao {get; set;}
-        
 
-        [Required(ErrorMessage ="É necessário informar o id do dono da divida")]
-       public virtual Cliente ClienteDaDivida {get ; set;}
+        //! TODO implementar logica
+        public bool Situacao {get; set;}
+
+
+        [Required(ErrorMessage = "É necessário fornecer descrição para a divida")]
+        public string Descricao { get; set; }
+
+
+        [Required(ErrorMessage = "É necessário informar o id do dono da divida")]
+        public virtual Cliente ClienteDaDivida { get; set; }
         //public int IdCliente {get; set;}
     }
 }

@@ -12,8 +12,8 @@ export default function Navbar() {
         </div>
 
         <div className="links">
-          <Link to="/cadastro/cliente">Cadastrar cliente</Link>
-          <Link to="/cadastro/divida"> Cadastrar divida</Link>
+          <Link to="/clientes">Cadastrar cliente</Link>
+          <Link to="/dividas"> Cadastrar divida</Link>
         </div>
       </div>
     </>

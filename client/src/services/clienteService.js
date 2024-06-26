@@ -8,6 +8,26 @@ export  function listarClientes(pagina, pesquisa){
     return response
 }
 
+export function getCliente(id){
+    let response = fetch(URL_API+"/api/cliente/"+id)
+    return response
+}
+
+
+export function postCliente(cliente) {
+    let request = {
+        method: cliente.id ? "PUT" : "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(cliente)
+    }
+
+    let response = fetch(URL_API+"/api/cliente", request)
+
+    return response
+}
+
 
 export function idadeAtual(nascimento){
     var today = new Date();
@@ -18,15 +38,4 @@ export function idadeAtual(nascimento){
         age--;
     }
     return age;
-}
-
-export function somarDividas(dividas){
-    let soma = 0
-    dividas.map(divida => {
-        if(divida.situacao == false){
-            soma += divida.valor
-        }
-    })
-    soma = parseFloat(soma)
-    return soma
 }

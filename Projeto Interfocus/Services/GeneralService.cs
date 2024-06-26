@@ -9,6 +9,7 @@ namespace ProjetoInterfocus.Services{
                     soma += divida.Valor;
                 }
             }
+            cliente.TotalEmAberto = soma;
             return soma;
         }
     }

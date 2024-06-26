@@ -55,6 +55,8 @@ namespace ProjetoInterfocus.Entidades
             }
         } }
 
+        public float TotalEmAberto { get; set; }
+
 
         public virtual IList<Divida> DividasDoCliente{ get; set; } = new List<Divida>();
     }

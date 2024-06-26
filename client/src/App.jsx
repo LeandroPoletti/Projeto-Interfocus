@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter } from "simple-react-routing";
 import Layout from "./layout/Layout";
 import Home from "./layout/Home";
+import FormCliente from "./components/FormCliente";
 
 function App() {
   return (
@@ -12,6 +13,14 @@ function App() {
           path: "",
           component: <Home></Home>
         },
+        {
+          path: "clientes/:codigo",
+          component: <FormCliente></FormCliente>
+        },
+        {
+          path: "clientes",
+          component: <FormCliente></FormCliente>
+        }
 
       ]}>
       <Layout></Layout>

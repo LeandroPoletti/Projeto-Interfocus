@@ -12,52 +12,28 @@ namespace ProjetoInterfocus.Entidades
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "CPF é obrigatório")]
-        private string cpf;
-        public string Cpf
-        {
-            get { return cpf; }
-            set
-            {
-                if (VerificationService.VerificarCpf(value, out List<ValidationResult> erros))
-                {
-                    cpf = value;
-                }
-                else
-                {
-                    Console.WriteLine(erros);
-                    throw new ArgumentException("CPF inválido!");
-                }
-            }
-        }
+        [ValidCpf(ErrorMessage ="Cpf invalido")]
+        public string Cpf { get; set; }
 
         [Required(ErrorMessage = "Data de Nascimento é obrigatório")]
-
-        private DateTime nascimento;
-
-        public DateTime Nascimento
+        [IsAdult(ErrorMessage ="Necessário ser maior de 18 anos")]
+        public DateTime Nascimento {get; set;}
+        private string email = null;
+        public string? Email
         {
-            get { return nascimento; }
-
+            get { return email; }
             set
             {
-                if (VerificationService.VerificarNascimento(value, out List<ValidationResult> erros) == false)
+                if (value != null)
                 {
-                    Console.WriteLine(erros);
-                    throw new ArgumentException("Data incorreta");
+                    email = value.ToLower();
                 }
-                nascimento = value;
             }
         }
-        private string email = null;
-        public string? Email { get {return email;} set {
-            if(value != null){
-                email = value.ToLower();
-            }
-        } }
 
         public float TotalEmAberto { get; set; }
 
 
-        public virtual IList<Divida> DividasDoCliente{ get; set; } = new List<Divida>();
+        public virtual IList<Divida> DividasDoCliente { get; set; } = new List<Divida>();
     }
 }

@@ -66,14 +66,15 @@ namespace ProjetoInterfocus.Services
 
         public bool Editar(Divida divida, out List<ValidationResult> erros)
         {
+            using var sessao = session.OpenSession();
+            Cliente dono = sessao.Get<Cliente>(divida.ClienteDaDivida.Id);
+            divida.ClienteDaDivida = dono;
             if (Validar(divida, out erros))
             {
 
-                using var sessao = session.OpenSession();
                 using var transaction = sessao.BeginTransaction();
 
                 Divida registrada = sessao.Get<Divida>(divida.Id);
-                Cliente dono = sessao.Get<Cliente>(registrada.ClienteDaDivida.Id);
 
                 if (divida.Situacao == false)
                 {
@@ -85,6 +86,8 @@ namespace ProjetoInterfocus.Services
                         return false;
                     }
                 }
+
+
 
                 sessao.Merge(divida);
                 // sessao.Merge(dono);
@@ -125,10 +128,17 @@ namespace ProjetoInterfocus.Services
         {
             using var sessao = session.OpenSession();
             var dividas = sessao.Query<Divida>()
-                .OrderBy(c => c.Id)
-                .Skip((pagina - 1) * 10)
-                .Take(10)
                 .ToList();
+
+            dividas = dividas.OrderByDescending(d => d.Valor).ToList();
+
+            if (pagina > 0)
+            {
+                dividas = dividas
+                .Skip((pagina - 1) * 10)
+                .Take(10).ToList();
+            }
+
 
             foreach (var divida in dividas)
             {

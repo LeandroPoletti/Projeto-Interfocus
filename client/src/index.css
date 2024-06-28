@@ -90,7 +90,7 @@ body {
   background-color: rgb(1, 199, 1) !important;
 }
 
-input{
+input, textarea, select{
   color: black;
 }
 

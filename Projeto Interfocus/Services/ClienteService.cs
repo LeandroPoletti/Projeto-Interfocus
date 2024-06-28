@@ -22,7 +22,7 @@ namespace ProjetoInterfocus.Services
                 erros,
                 true
             );
-            
+
             return valido;
         }
 
@@ -74,7 +74,7 @@ namespace ProjetoInterfocus.Services
             using var sessao = session.OpenSession();
             using var transaction = sessao.BeginTransaction();
             var cliente = sessao.Query<Cliente>()
-                .Where(c => c.Id == id).Fetch(c => c.DividasDoCliente)
+                .Where(c => c.Id == id)
                 .FirstOrDefault();
             if (cliente == null)
             {
@@ -96,8 +96,19 @@ namespace ProjetoInterfocus.Services
             var clientes = sessao.Query<Cliente>()
             .ToList();
 
-            clientes = clientes.OrderByDescending(c => GeneralService.SomarDividas(c))
-            .Skip((page-1) * 10)
+            clientes = clientes.OrderByDescending(c => GeneralService.SomarDividas(c)).ToList();
+            clientes.ForEach(cliente =>
+            {
+                cliente.DividasDoCliente = cliente.DividasDoCliente.OrderByDescending(d => d.Valor)
+                .OrderByDescending(d => d.Situacao == false)
+                .ToList();
+            });
+            if (page == -1)
+            {
+                return clientes;
+            }
+
+            clientes = clientes.Skip((page - 1) * 10)
             .Take(10)
             .ToList();
 
@@ -116,7 +127,7 @@ namespace ProjetoInterfocus.Services
                 .ToList();
 
             clientes = clientes.OrderByDescending(c => GeneralService.SomarDividas(c))
-            .Skip((page-1) * 10)
+            .Skip((page - 1) * 10)
             .Take(10)
             .ToList();
 

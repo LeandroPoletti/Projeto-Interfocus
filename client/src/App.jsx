@@ -3,6 +3,7 @@ import { BrowserRouter } from "simple-react-routing";
 import Layout from "./layout/Layout";
 import Home from "./layout/Home";
 import FormCliente from "./components/FormCliente";
+import { FormDivida } from "./components/FormDivida";
 
 function App() {
   return (
@@ -20,6 +21,14 @@ function App() {
         {
           path: "clientes",
           component: <FormCliente></FormCliente>
+        },
+        {
+          path: "dividas",
+          component: <FormDivida></FormDivida>
+        },
+        {
+          path: "dividas/:codigo",
+          component: <FormDivida></FormDivida>
         }
 
       ]}>

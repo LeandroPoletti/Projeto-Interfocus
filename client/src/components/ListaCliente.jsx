@@ -1,9 +1,20 @@
 import { Link } from "simple-react-routing";
 import { idadeAtual } from "../services/clienteService";
 import CardDivida from "./CardDivida";
+import { DeletarCliente } from "../services/clienteService";
 
 /* eslint-disable react/prop-types */
 export default function ListaCliente({ cliente }) {
+
+
+  const deletar = async (id) => {
+    let resposta = await DeletarCliente(id)
+    if(resposta.status == 200){
+      console.log("Deletado")
+      window.location.reload()
+    }
+  }
+
   let idade = idadeAtual(cliente.nascimento);
   return (
     <>
@@ -28,7 +39,7 @@ export default function ListaCliente({ cliente }) {
           })}
         </div>
         <div className="card-footer card-cliente-footer">
-          <button className="card-button">Excluir</button>
+          <button className="card-button" onClick={() => deletar(cliente.id)}>Excluir</button>
           <Link to={"clientes/" + cliente.id}>
             <button className="card-button">Editar</button>
           </Link>

@@ -52,3 +52,12 @@
 > > - DELETE
 > >
 > >   Permite deletar apenas uma divida
+>
+> ***
+> ## FRONTEND
+> 
+> Foi utilizado a biblioteca react porém devido a questão de disponibilidade de tempo e habilidades pessoais não foi possível realizar uma integração decente, porém é possível realizar todas as ações esperadas, sendo elas:
+> 
+> - Cadastrar uma divida ou um cliente
+> - Alterar informações de um cliente ou de uma divida 
+> - Excluir um cliente ou uma divida

@@ -28,9 +28,11 @@
 > > - POST
 > >
 > >   Permite a atualização apenas dos dados cadastrados do cliente, sendo necessário utilizar o formulário de cada divida para atualizar suas informações.
+> >
 > > - PUT
 > >
 > >   Permite atualizar dados cadastrados com a mesma restrição de dividas do POST
+> >
 > > - DELETE
 > >   Permite deletar um cliente cadastrado, sendo a exclusão de dividas relacionadas a ela feito com constraint no banco de dados
 >
@@ -42,22 +44,26 @@
 >
 > > - GET
 > >
-> >   É possivel utilizar de duas formas, passando ou não o parametro id. No primeiro caso retorna apenas a divida referente ao id junto com informações do cliente da divída, que por si retorna as demais que possui. No segundo caso retorna todas as dividas cadastradas e informações de seus clientes, porém os clientes não listam as demais dividas
+> >   É possivel utilizar de duas formas, passando ou não o parametro id. No primeiro caso retorna apenas a divida referente ao id junto com informações do cliente da divída, que por si retorna as demais que possui. No segundo caso retorna todas as dividas cadastradas e informações de seus clientes, porém os clientes não listam as demais dividas, porém devido à disponibilidade de tempo não foi possível implementar a feture que consumiria o endpoint, sendo uma pagina listando por valores todas as dividas cadastradas de todos os clientes
+> >
 > > - POST
 > >
 > >   Permite cadastrar uma nova divida ao cliente informado, sendo necessário apenas informar o id do cliente
+> >
 > > - PUT
 > >
 > >   Permite atualizar o cadastrado da divida, sendo possível alterar seu dono por meio dessa requisição
+> >
 > > - DELETE
 > >
 > >   Permite deletar apenas uma divida
 >
-> ***
+> ---
+>
 > ## FRONTEND
-> 
+>
 > Foi utilizado a biblioteca react porém devido a questão de disponibilidade de tempo e habilidades pessoais não foi possível realizar uma integração decente, porém é possível realizar todas as ações esperadas, sendo elas:
-> 
+>
 > - Cadastrar uma divida ou um cliente
-> - Alterar informações de um cliente ou de uma divida 
+> - Alterar informações de um cliente ou de uma divida
 > - Excluir um cliente ou uma divida

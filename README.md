@@ -7,7 +7,7 @@
 ## Como inicializar o banco de dados
 
 - As instruções do banco se encontram no arquivo tableinfo.sql
-- Para realizar testes existe o arquivo mockdata.sql que contém dados de exemplo possuem cpf invalido pois foram gerados pelo chat gpt para fins de teste
+- Para realizar testes existe o arquivo mockdata.sql que contém dados de exemplo
 
 ## Uso backend
 

@@ -22,10 +22,14 @@
 > Cliente
 >
 > > - GET
+> >
 > >   Permite ao usuario listar os clintes cadastrados por pagina, onde cada retorna um limite de 10 clientes, porém ao inserir a pagina como -1 retorna todos os clientes listadas, permitindo a funcionalidade do `<select>` ao cadastrar dividas.
+> >
 > > - POST
+> >
 > >   Permite a atualização apenas dos dados cadastrados do cliente, sendo necessário utilizar o formulário de cada divida para atualizar suas informações.
 > > - PUT
+> >
 > >   Permite atualizar dados cadastrados com a mesma restrição de dividas do POST
 > > - DELETE
 > >   Permite deletar um cliente cadastrado, sendo a exclusão de dividas relacionadas a ela feito com constraint no banco de dados
@@ -35,11 +39,16 @@
 > Divida
 >
 > Todos os métodos responsáveis por atualizar a informação verificam a somatória do cliente antes de gravar as alterações
+>
 > > - GET
+> >
 > >   É possivel utilizar de duas formas, passando ou não o parametro id. No primeiro caso retorna apenas a divida referente ao id junto com informações do cliente da divída, que por si retorna as demais que possui. No segundo caso retorna todas as dividas cadastradas e informações de seus clientes, porém os clientes não listam as demais dividas
 > > - POST
-> > Permite cadastrar uma nova divida ao cliente informado, sendo necessário apenas informar o id do cliente
+> >
+> >   Permite cadastrar uma nova divida ao cliente informado, sendo necessário apenas informar o id do cliente
 > > - PUT
-> > Permite atualizar o cadastrado da divida, sendo possível alterar seu dono por meio dessa requisição
+> >
+> >   Permite atualizar o cadastrado da divida, sendo possível alterar seu dono por meio dessa requisição
 > > - DELETE
-> > Permite deletar apenas uma divida
+> >
+> >   Permite deletar apenas uma divida
